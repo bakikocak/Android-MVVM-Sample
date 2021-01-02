@@ -1,5 +1,6 @@
 package com.bakikocak.android_mvvm_sample.ui.list
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,6 +15,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bakikocak.android_mvvm_sample.BuildConfig
 import com.bakikocak.android_mvvm_sample.R
 import com.bakikocak.android_mvvm_sample.utils.Resource
@@ -24,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_list.*
 class MovieListFragment : Fragment() {
 
     lateinit var navController: NavController
+    lateinit var movieAdapter: MovieListAdapter
 
     private val viewModel: MovieListViewModel by viewModels()
 
@@ -37,12 +41,12 @@ class MovieListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
+        setupMovieRv()
 
-        // Navigate to detail fragment
-        go_to_detail_btn.setOnClickListener {
-            /*val bundle = bundleOf("movieId" to 1) // dummy id is passed for now.
-            navController.navigate(R.id.action_listFragment_to_detailFragment, bundle)*/
-            viewModel.loadTrendingMovies()
+        // Navigate to detail fragment passing its id.
+        movieAdapter.setOnItemClickListener {
+            val bundle = bundleOf("movieId" to it.id)
+            navController.navigate(R.id.action_listFragment_to_detailFragment, bundle)
         }
 
         viewModel.getTrendingMovies().observe(viewLifecycleOwner, Observer { response ->
@@ -50,7 +54,7 @@ class MovieListFragment : Fragment() {
                 is Resource.Success -> {
                     hideProgressBar()
                     response.data?.let { movieResponse ->
-                        // show data
+                        movieAdapter.differ.submitList(movieResponse.results)
                     }
                 }
 
@@ -77,4 +81,15 @@ class MovieListFragment : Fragment() {
     private fun hideProgressBar() {
         list_progress_bar.visibility = GONE
     }
+
+    private fun setupMovieRv() {
+        movieAdapter = MovieListAdapter()
+        movie_list_rv.apply {
+            adapter = movieAdapter
+            layoutManager = GridLayoutManager(activity, getSpanCount())
+        }
+    }
+
+    private fun getSpanCount(): Int =
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) 2 else 3
 }
