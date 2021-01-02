@@ -1,7 +1,7 @@
 package com.bakikocak.android_mvvm_sample.di
 
 import com.bakikocak.android_mvvm_sample.BuildConfig
-import com.bakikocak.android_mvvm_sample.data.api.service.TrendingMovieService
+import com.bakikocak.android_mvvm_sample.data.api.TrendingMovieService
 import com.bakikocak.android_mvvm_sample.utils.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -45,7 +45,7 @@ object RetrofitModule {
         val originalHttpUrl = original.url
 
         val url = originalHttpUrl.newBuilder()
-            .addQueryParameter("apiKey", BuildConfig.API_KEY)
+            .addQueryParameter("api_key", BuildConfig.API_KEY)
             .build()
         val requestBuilder = original.newBuilder()
             .url(url)

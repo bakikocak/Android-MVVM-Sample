@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.bakikocak.android_mvvm_sample.ui.list.ListFragment"
+        android:name="com.bakikocak.android_mvvm_sample.ui.list.MovieListFragment"
         android:label="List Fragment"
         tools:layout="@layout/fragment_list">
 
