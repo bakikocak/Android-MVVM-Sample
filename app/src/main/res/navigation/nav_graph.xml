@@ -11,13 +11,21 @@
         android:label="List Fragment"
         tools:layout="@layout/fragment_list">
 
+        <action
+            android:id="@+id/action_listFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/detailFragment"
         android:name="com.bakikocak.android_mvvm_sample.ui.detail.DetailFragment"
-        android:label="Detail Fragment"
+        android:label="DetailFragment"
         tools:layout="@layout/fragment_detail">
+
+        <argument android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="0"/>
+
     </fragment>
 
 </navigation>

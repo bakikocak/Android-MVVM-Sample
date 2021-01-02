@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.fragment_list.*
 
 class DetailFragment : Fragment() {
 
+    var movieId: Int? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -21,5 +23,7 @@ class DetailFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        movieId = arguments!!.getInt("movieId")
+        detail_textview.text = "Detail of movie id: $movieId will be shown here.."
     }
 }
